@@ -2,7 +2,8 @@ import { StyleSheet, TextInputProps } from "react-native";
 import { Input } from "./Themed";
 
 export default function TextInput(props: TextInputProps) {
-  return <Input style={styles.input} {...props} />;
+  const { style, ...otherProps } = props;
+  return <Input style={[styles.input, style]} {...otherProps} />;
 }
 
 const styles = StyleSheet.create({

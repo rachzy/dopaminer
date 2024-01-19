@@ -1,29 +1,25 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, TextInputProps } from "react-native";
 import Label from "../atoms/Label";
 import TextInput from "../atoms/TextInput";
-import { View } from "../atoms/Themed";
+import { Text, View } from "../atoms/Themed";
 
-interface IProps {
+interface IProps extends TextInputProps {
   label: string;
-  placeholder: string;
   password?: boolean;
-  value?: string;
+  error?: string | null;
 }
 
-export default function InputGroup({
-  label,
-  placeholder,
-  password,
-  value,
-}: IProps) {
+export default function InputGroup(props: IProps) {
+  const { label, error, password, ...otherProps } = props;
   return (
     <View style={styles.inputContainer}>
       <Label>{label}</Label>
       <TextInput
-        placeholder={placeholder}
         secureTextEntry={password}
-        value={value}
+        style={error ? { borderWidth: 1, borderColor: "red" } : {}}
+        {...otherProps}
       />
+      {error && <Text style={{ color: "red" }}>{error}</Text>}
     </View>
   );
 }

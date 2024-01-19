@@ -11,7 +11,7 @@ export default function LoginScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={DopaminerLogo} />
+        <Image source={DopaminerLogo} style={{ width: 96, height: 96 }} />
         <Image source={DopaminerLabel} />
       </View>
       <View style={styles.titleContainer}>
@@ -30,6 +30,8 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     rowGap: 8,
+    justifyContent: "center",
+    alignItems: "center",
   },
   titleContainer: {
     marginVertical: 24,

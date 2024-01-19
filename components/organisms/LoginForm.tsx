@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 import { DefaultPressable } from "../atoms/DefaultPressable";
 import { Text, View } from "../atoms/Themed";
 import InputGroup from "../molecules/InputGroup";
+import { Link } from "expo-router";
 
 export default function LoginForm() {
   return (
@@ -12,7 +13,9 @@ export default function LoginForm() {
         <DefaultPressable label="Acessar" />
         <Text>
           Novo por aqui?{" "}
-          <Text style={{ color: "#07F9A2" }}>Crie sua conta!</Text>
+          <Link href={"/auth/register"}>
+            <Text style={{ color: "#07F9A2" }}>Crie sua conta!</Text>
+          </Link>
         </Text>
       </View>
     </View>
