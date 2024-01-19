@@ -7,9 +7,10 @@ import DopaminerLabel from "../../assets/images/dopaminer-label.png";
 import { Link } from "expo-router";
 import { IFormField } from "../../interfaces/FormField";
 import Form from "../organisms/Form";
+import { useState } from "react";
 
 export default function LoginScreen() {
-  const formFields: IFormField[] = [
+  const [formFields, setFormFields] = useState<IFormField[]>([
     {
       name: "email",
       label: "Email",
@@ -27,7 +28,7 @@ export default function LoginScreen() {
       value: "",
       password: true,
     },
-  ];
+  ]);
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -37,6 +38,7 @@ export default function LoginScreen() {
       <Form
         title="Bem Vindo!"
         fields={formFields}
+        setFields={setFormFields}
         button={{ label: "Entrar" }}
       />
       <Text style={styles.bottomText}>

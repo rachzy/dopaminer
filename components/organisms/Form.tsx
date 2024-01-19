@@ -9,58 +9,64 @@ import Title from "../atoms/Title";
 interface IProps {
   title: string;
   fields: IFormField[];
+  setFields: React.Dispatch<React.SetStateAction<IFormField[]>>;
   button: {
     label: string;
     onPress?: () => void;
   };
+  onSubmit?: () => void;
 }
 
-export default function Form({ title, fields, button }: IProps) {
-  const [inputs, setInputs] = useState<IFormField[]>(fields);
-
-  function handleInputChange(name: string, value: string) {
-    setInputs((currentValue) =>
-      currentValue.map((input) => {
-        if (input.name === name) {
-          return { ...input, value };
+export default function Form({
+  title,
+  fields,
+  setFields,
+  button,
+  onSubmit,
+}: IProps) {
+  function handleFieldChange(name: string, value: string) {
+    setFields((currentValue) =>
+      currentValue.map((field) => {
+        if (field.name === name) {
+          return { ...field, value };
         }
-        return input;
+        return field;
       })
     );
   }
 
   function clearErrors() {
-    setInputs((currentValue) =>
-      currentValue.map((input) => {
-        return { ...input, errorValue: null };
+    setFields((currentValue) =>
+      currentValue.map((field) => {
+        return { ...field, errorValue: null };
       })
     );
   }
 
   function validateForm() {
-    const newInputs = inputs.map((input) => {
+    const newFields = fields.map((field) => {
       let error = null;
 
-      if (input.refine && !input.refine(input.value)) {
+      if (field.refine && !field.refine(field.value)) {
         error = "Formato inválido";
       }
 
-      if (input.min && input.value.length < input.min) {
-        error = `Pelo menos ${input.min} caracteres.`;
+      if (field.min && field.value.length < field.min) {
+        error = `Pelo menos ${field.min} caracteres.`;
       }
 
-      if (!input.value) {
+      if (!field.value) {
         error = "Campo obrigatório";
       }
 
       return {
-        ...input,
+        ...field,
         error,
       };
     });
 
-    setInputs(newInputs);
-    return newInputs.every((input) => input.error === null);
+    setFields(newFields);
+    return newFields.every((field) => field.error === null);
   }
 
   function handleButtonPress() {
@@ -68,18 +74,19 @@ export default function Form({ title, fields, button }: IProps) {
 
     if (!validateForm()) return;
     button.onPress && button.onPress();
+    onSubmit && onSubmit();
   }
 
-  function mapInputs() {
-    return inputs.map((input) => {
-      const { min, max, onChange, ...otherProps } = input;
+  function mapFields() {
+    return fields.map((field) => {
+      const { min, max, onChange, ...otherProps } = field;
       return (
         <InputGroup
-          key={input.label}
+          key={field.label}
           onChange={(e) => {
-            if (input.onChange && !input.onChange(e)) return;
+            if (field.onChange && !field.onChange(e)) return;
             if (e.nativeEvent.text.length > max) return;
-            handleInputChange(input.name, e.nativeEvent.text);
+            handleFieldChange(field.name, e.nativeEvent.text);
           }}
           {...otherProps}
         />
@@ -92,7 +99,7 @@ export default function Form({ title, fields, button }: IProps) {
       <View style={styles.titleContainer}>
         <Title>{title}</Title>
       </View>
-      {mapInputs()}
+      {mapFields()}
       <View style={styles.buttonContainer}>
         <DefaultPressable label="Próximo" onPress={handleButtonPress} />
       </View>

@@ -4,9 +4,13 @@ import { IFormField } from "../../interfaces/FormField";
 import formatDate from "../../util/formatDate";
 import Form from "../organisms/Form";
 import { Link } from "expo-router";
+import { useEffect, useState } from "react";
+import { State, useRegisterFormStore } from "../../store/forms/register";
 
 export default function RegisterScreen() {
-  const formFields: IFormField[] = [
+  const formValues = useRegisterFormStore((state) => state.values);
+  const setFormValues = useRegisterFormStore((state) => state.setValues);
+  const [formFields, setFormFields] = useState<IFormField[]>([
     {
       name: "name",
       label: "Nome de usuário",
@@ -41,14 +45,29 @@ export default function RegisterScreen() {
         );
       },
     },
-  ];
+  ]);
+
+  function handleSubmit() {
+    const newValues: State["values"] = {};
+    formFields.forEach((field) => {
+      newValues[field.name as keyof State["values"]] = field.value;
+    });
+
+    setFormValues({values: newValues});
+  }
+
+  useEffect(() => {
+    console.log(formValues);
+  }, [formValues]);
 
   return (
     <View style={styles.container}>
       <Form
         title="Vamos Criar Seu Perfil de Usuário:"
         fields={formFields}
+        setFields={setFormFields}
         button={{ label: "Próximo" }}
+        onSubmit={handleSubmit}
       />
       <Text style={styles.bottomText}>
         Já possui uma conta?{" "}
