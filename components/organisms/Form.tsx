@@ -1,64 +1,22 @@
-import {
-  NativeSyntheticEvent,
-  StyleSheet,
-  TextInputChangeEventData,
-} from "react-native";
-import { DefaultPressable } from "../atoms/DefaultPressable";
-import { Text, View } from "../atoms/Themed";
-import InputGroup from "../molecules/InputGroup";
-import { Link } from "expo-router";
 import { useState } from "react";
-import formatDate from "../../util/formatDate";
+import { IFormField } from "../../interfaces/FormField";
+import InputGroup from "../molecules/InputGroup";
+import { View } from "../atoms/Themed";
+import { DefaultPressable } from "../atoms/DefaultPressable";
+import { StyleSheet } from "react-native";
+import Title from "../atoms/Title";
 
-interface IInput {
-  name: string;
-  label: string;
-  placeholder: string;
-  error: string | null;
-  value: string;
-  min?: number;
-  max: number;
-  onChange?: (e: NativeSyntheticEvent<TextInputChangeEventData>) => boolean;
-  refine?: (value: string) => boolean;
+interface IProps {
+  title: string;
+  fields: IFormField[];
+  button: {
+    label: string;
+    onPress?: () => void;
+  };
 }
 
-export default function RegisterForm() {
-  const [inputs, setInputs] = useState<IInput[]>([
-    {
-      name: "name",
-      label: "Nome de usuário",
-      placeholder: "Nome",
-      error: null,
-      value: "",
-      min: 3,
-      max: 128,
-    },
-    {
-      name: "birthdate",
-      label: "Data de nascimento",
-      placeholder: "##/##/####",
-      error: null,
-      value: "",
-      min: 10,
-      max: 10,
-      onChange: (e) => {
-        const { text } = e.nativeEvent;
-        if (!text) return true;
-
-        const character = text.charAt(text.length - 1);
-
-        if (character === "/") return true;
-
-        return !isNaN(parseInt(character));
-      },
-      refine: (value: string) => {
-        return (
-          value.split("/").length === 3 &&
-          !isNaN(new Date(formatDate(value)).getTime())
-        );
-      },
-    },
-  ]);
+export default function Form({ title, fields, button }: IProps) {
+  const [inputs, setInputs] = useState<IFormField[]>(fields);
 
   function handleInputChange(name: string, value: string) {
     setInputs((currentValue) =>
@@ -109,6 +67,7 @@ export default function RegisterForm() {
     clearErrors();
 
     if (!validateForm()) return;
+    button.onPress && button.onPress();
   }
 
   function mapInputs() {
@@ -130,15 +89,12 @@ export default function RegisterForm() {
 
   return (
     <View style={styles.formContainer}>
+      <View style={styles.titleContainer}>
+        <Title>{title}</Title>
+      </View>
       {mapInputs()}
       <View style={styles.buttonContainer}>
         <DefaultPressable label="Próximo" onPress={handleButtonPress} />
-        <Text>
-          Já possui uma conta?{" "}
-          <Link href={"/auth/login"}>
-            <Text style={{ color: "#07F9A2" }}>Faça login!</Text>
-          </Link>
-        </Text>
       </View>
     </View>
   );
@@ -148,10 +104,14 @@ const styles = StyleSheet.create({
   formContainer: {
     width: "80%",
   },
-  buttonContainer: {
-    marginVertical: 12,
+  titleContainer: {
+    marginVertical: 24,
     justifyContent: "center",
     alignItems: "center",
-    rowGap: 12,
+  },
+  buttonContainer: {
+    marginTop: 12,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
