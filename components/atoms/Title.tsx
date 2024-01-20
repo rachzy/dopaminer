@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
-import { Text } from "./Themed";
+import { Text, TextProps } from "./Themed";
 
-export default function Title({ children }: { children: React.ReactNode }) {
+export default function Title(props: TextProps) {
   return (
-    <Text style={styles.title} fontFamily="700">
-      {children}
+    <Text style={[styles.title, props.style]} fontFamily="700">
+      {props.children}
     </Text>
   );
 }

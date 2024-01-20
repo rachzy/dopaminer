@@ -4,11 +4,13 @@ import { IFormField } from "../../interfaces/FormField";
 import formatDate from "../../util/formatDate";
 import Form from "../organisms/Form";
 import { Link } from "expo-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { State, useRegisterFormStore } from "../../store/forms/register";
+import { router } from "expo-router";
+import { isValid, parse } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 export default function RegisterScreen() {
-  const formValues = useRegisterFormStore((state) => state.values);
   const setFormValues = useRegisterFormStore((state) => state.setValues);
   const [formFields, setFormFields] = useState<IFormField[]>([
     {
@@ -30,35 +32,42 @@ export default function RegisterScreen() {
       max: 10,
       onChange: (e) => {
         const { text } = e.nativeEvent;
-        if (!text) return true;
+        const char = text.charAt(text.length - 1);
 
-        const character = text.charAt(text.length - 1);
-
-        if (character === "/") return true;
-
-        return !isNaN(parseInt(character));
+        if (
+          !isNaN(parseInt(char)) &&
+          (text.length === 2 || text.length === 5)
+        ) {
+          e.nativeEvent.text = `${text}/`;
+        }
+        return true;
       },
       refine: (value: string) => {
-        return (
-          value.split("/").length === 3 &&
-          !isNaN(new Date(formatDate(value)).getTime())
-        );
+        if (value.split("/").length !== 3) return false;
+
+        const date = formatDate(value) as Date;
+
+        if (isNaN(date.getTime())) return false;
+
+        const parsed = parse(value, "P", new Date(), { locale: ptBR });
+        if (!isValid(parsed)) return false;
+
+        if (date.getTime() > Date.now()) return false;
+
+        return true;
       },
     },
   ]);
 
   function handleSubmit() {
-    const newValues: State["values"] = {};
+    const newValues: Partial<State["values"]> = {};
     formFields.forEach((field) => {
       newValues[field.name as keyof State["values"]] = field.value;
     });
 
-    setFormValues({values: newValues});
+    setFormValues({ ...newValues });
+    router.push("/auth/register/uploadProfilePicture");
   }
-
-  useEffect(() => {
-    console.log(formValues);
-  }, [formValues]);
 
   return (
     <View style={styles.container}>

@@ -10,9 +10,7 @@ export function DefaultPressable(props: IPressableProps) {
   const { label, ...otherProps } = props;
   const color = useThemeColor({ light: "#FFFFFF", dark: "#1A2C47" }, "text");
 
-  function handleButtonClick() {
-
-  }
+  function handleButtonClick() {}
 
   return (
     <View style={{ width: "100%" }}>
@@ -37,6 +35,7 @@ export function DefaultPressable(props: IPressableProps) {
 
 const styles = StyleSheet.create({
   label: {
+    fontFamily: "Poppins_700Bold",
     fontSize: 26,
   },
 });

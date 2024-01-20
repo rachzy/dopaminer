@@ -1,10 +1,5 @@
-import { View } from "../../../components/atoms/Themed";
-import Title from "../../../components/atoms/Title";
+import UploadPfpScreen from "../../../components/templates/UploadPfp";
 
 export default function UploadProfilePicture() {
-  return (
-    <View>
-      <Title>Hello World</Title>
-    </View>
-  );
+  return <UploadPfpScreen />;
 }

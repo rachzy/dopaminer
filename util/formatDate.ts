@@ -6,8 +6,8 @@ export default function formatDate(date: string | Date): string | Date {
       return new Date(`${date} 00:00:00`);
     }
 
-    const [month, day, year] = date.split("/");
-    return new Date(`${+year}-${+month}-${+day} 00:00:00`);
+    const [day, month, year] = date.split("/");
+    return new Date(+year, +month - 1, +day);
   }
 
   function toString(): string {
