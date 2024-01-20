@@ -1,8 +1,7 @@
-import { Appearance, StyleSheet, useColorScheme } from "react-native";
+import { Appearance, StyleSheet } from "react-native";
 import { View } from "../components/atoms/Themed";
 import * as Progress from "react-native-progress";
 import Colors from "../constants/Colors";
-import { router } from "expo-router";
 
 export default function Loading() {
   const colorScheme = Appearance.getColorScheme() as "light" | "dark" | null;

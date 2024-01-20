@@ -48,7 +48,7 @@ export default function Form({
       let error = null;
 
       if (field.refine && !field.refine(field.value)) {
-        error = "Formato inválido";
+        error = "Valor ou formato inválido";
       }
 
       if (field.min && field.value.length < field.min) {
