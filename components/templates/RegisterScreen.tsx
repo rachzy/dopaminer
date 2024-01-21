@@ -18,16 +18,29 @@ export default function RegisterScreen() {
       label: "Nome de usuário",
       placeholder: "Nome",
       error: null,
-      value: "",
+      value: "debug",
       min: 3,
       max: 128,
+    },
+    {
+      name: "email",
+      label: "Email",
+      placeholder: "Email",
+      error: null,
+      value: "debug@gmail.com",
+      min: 10,
+      max: 128,
+      refine: (value: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(value);
+      },
     },
     {
       name: "birthdate",
       label: "Data de nascimento",
       placeholder: "##/##/####",
       error: null,
-      value: "",
+      value: "25/02/2006",
       min: 10,
       max: 10,
       onChange: (e) => {
