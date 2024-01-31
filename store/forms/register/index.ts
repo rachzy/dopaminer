@@ -3,6 +3,7 @@ import { create } from "zustand";
 export type State = {
   values: {
     name?: string;
+    email?: string;
     birthdate?: string;
     profilePicture: string;
   };
@@ -15,6 +16,7 @@ type Action = {
 export const useRegisterFormStore = create<State & Action>((set) => ({
   values: {
     name: "",
+    email: "",
     birthdate: "",
     profilePicture: "default-pfp.png",
   },

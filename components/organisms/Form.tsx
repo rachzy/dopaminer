@@ -1,13 +1,21 @@
-import { useState } from "react";
 import { IFormField } from "../../interfaces/FormField";
 import InputGroup from "../molecules/InputGroup";
 import { View } from "../atoms/Themed";
 import { DefaultPressable } from "../atoms/DefaultPressable";
-import { StyleSheet } from "react-native";
+import {
+  NativeSyntheticEvent,
+  StyleSheet,
+  TextInputChangeEventData,
+} from "react-native";
 import Title from "../atoms/Title";
+import { isValid, parse } from "date-fns";
+import formatDate from "../../util/formatDate";
+import { ptBR } from "date-fns/locale";
+import { Picker } from "@react-native-picker/picker";
+import SelectGroup from "../molecules/SelectGroup";
 
 interface IProps {
-  title: string;
+  title: string | React.ReactNode;
   fields: IFormField[];
   setFields: React.Dispatch<React.SetStateAction<IFormField[]>>;
   button: {
@@ -24,13 +32,43 @@ export default function Form({
   button,
   onSubmit,
 }: IProps) {
-  function handleFieldChange(name: string, value: string) {
+  function handleFieldChange(
+    e: NativeSyntheticEvent<TextInputChangeEventData>,
+    field: IFormField
+  ) {
+    const { type } = field;
+
+    if (type === "date") {
+      const { text } = e.nativeEvent;
+      const char = text.charAt(text.length - 1);
+
+      if (!isNaN(parseInt(char)) && (text.length === 2 || text.length === 5)) {
+        e.nativeEvent.text = `${text}/`;
+      }
+    }
+
+    const { name } = field;
+    const value = e.nativeEvent.text;
+
     setFields((currentValue) =>
-      currentValue.map((field) => {
-        if (field.name === name) {
-          return { ...field, value };
+      currentValue.map((inField) => {
+        if (inField.name === name) {
+          return { ...inField, value };
         }
-        return field;
+        return inField;
+      })
+    );
+  }
+
+  function handlePickerChange(field: IFormField, value: any) {
+    const { name } = field;
+
+    setFields((currentValue) =>
+      currentValue.map((inField) => {
+        if (inField.name === name) {
+          return { ...inField, value };
+        }
+        return inField;
       })
     );
   }
@@ -47,15 +85,49 @@ export default function Form({
     const newFields = fields.map((field) => {
       let error = null;
 
-      if (field.refine && !field.refine(field.value)) {
+      const { refine, value, min, type } = field;
+
+      switch (type) {
+        case "email":
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(value)) error = "Email inválido";
+          break;
+        case "date":
+          if (value.split("/").length !== 3) {
+            error = "Formato de data inválido";
+            break;
+          }
+
+          const date = formatDate(value) as Date;
+
+          if (isNaN(date.getTime())) {
+            error = "Data inválida";
+            break;
+          }
+
+          const parsed = parse(value, "P", new Date(), { locale: ptBR });
+          if (!isValid(parsed)) {
+            error = "Data inválida";
+            break;
+          }
+
+          if (date.getTime() > Date.now()) {
+            error = "Data inválida";
+          }
+          break;
+        default:
+          break;
+      }
+
+      if (refine && !refine(value)) {
         error = "Valor ou formato inválido";
       }
 
-      if (field.min && field.value.length < field.min) {
-        error = `Pelo menos ${field.min} caracteres.`;
+      if (min && value.length < min) {
+        error = `Pelo menos ${min} caracteres.`;
       }
 
-      if (!field.value) {
+      if (!value) {
         error = "Campo obrigatório";
       }
 
@@ -79,14 +151,27 @@ export default function Form({
 
   function mapFields() {
     return fields.map((field) => {
-      const { min, max, onChange, ...otherProps } = field;
+      const { min, max, onChange, type, ...otherProps } = field;
+
+      if (type === "select") {
+        return (
+          <SelectGroup
+            key={field.name}
+            field={field}
+            onValueChange={(itemValue) => {
+              handlePickerChange(field, itemValue);
+            }}
+          />
+        );
+      }
+
       return (
         <InputGroup
-          key={field.label}
+          key={field.name}
           onChange={(e) => {
             if (field.onChange && !field.onChange(e)) return;
-            if (e.nativeEvent.text.length > max) return;
-            handleFieldChange(field.name, e.nativeEvent.text);
+            if (e.nativeEvent.text.length > max!) return;
+            handleFieldChange(e, field);
           }}
           {...otherProps}
         />

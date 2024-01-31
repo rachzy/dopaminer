@@ -24,51 +24,23 @@ export default function RegisterScreen() {
     },
     {
       name: "email",
+      type: "email",
       label: "Email",
       placeholder: "Email",
       error: null,
       value: "debug@gmail.com",
       min: 10,
       max: 128,
-      refine: (value: string) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(value);
-      },
     },
     {
       name: "birthdate",
+      type: "date",
       label: "Data de nascimento",
       placeholder: "##/##/####",
       error: null,
       value: "25/02/2006",
       min: 10,
       max: 10,
-      onChange: (e) => {
-        const { text } = e.nativeEvent;
-        const char = text.charAt(text.length - 1);
-
-        if (
-          !isNaN(parseInt(char)) &&
-          (text.length === 2 || text.length === 5)
-        ) {
-          e.nativeEvent.text = `${text}/`;
-        }
-        return true;
-      },
-      refine: (value: string) => {
-        if (value.split("/").length !== 3) return false;
-
-        const date = formatDate(value) as Date;
-
-        if (isNaN(date.getTime())) return false;
-
-        const parsed = parse(value, "P", new Date(), { locale: ptBR });
-        if (!isValid(parsed)) return false;
-
-        if (date.getTime() > Date.now()) return false;
-
-        return true;
-      },
     },
   ]);
 

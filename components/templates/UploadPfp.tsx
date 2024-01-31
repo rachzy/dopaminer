@@ -45,6 +45,8 @@ export default function UploadPfpScreen() {
     if (selectedImage) {
       setRegisterFormValues({ profilePicture: selectedImage });
     }
+    
+    router.push("/auth/register/firstTask");
   }
 
   return (
