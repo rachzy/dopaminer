@@ -7,6 +7,8 @@ interface IFormFieldOption {
   value: any;
 }
 
+// The IFormField interface represents a form field in the application.
+// It includes properties for the field's name, label, placeholder, error message, value, minimum and maximum length, type, options, password flag, onChange handler, and refine function.
 export interface IFormField {
     name: string;
     label: string;

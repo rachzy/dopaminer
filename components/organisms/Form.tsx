@@ -25,6 +25,8 @@ interface IProps {
   onSubmit?: () => void;
 }
 
+// This function represents a form component that includes input fields, a title, and a submit button.
+// It accepts title, fields, setFields, button, and onSubmit as props.
 export default function Form({
   title,
   fields,
@@ -32,6 +34,8 @@ export default function Form({
   button,
   onSubmit,
 }: IProps) {
+  // This function handles changes to the input fields.
+  // It updates the value of the corresponding field in the form state.
   function handleFieldChange(
     e: NativeSyntheticEvent<TextInputChangeEventData>,
     field: IFormField
@@ -60,6 +64,8 @@ export default function Form({
     );
   }
 
+  // This function handles changes to the picker fields.
+  // It updates the value of the corresponding field in the form state.
   function handlePickerChange(field: IFormField, value: any) {
     const { name } = field;
 
@@ -73,6 +79,7 @@ export default function Form({
     );
   }
 
+  // This function clears the error messages for all fields in the form.
   function clearErrors() {
     setFields((currentValue) =>
       currentValue.map((field) => {
@@ -81,6 +88,7 @@ export default function Form({
     );
   }
 
+  // This function validates the form fields and returns true if all fields are valid.
   function validateForm() {
     const newFields = fields.map((field) => {
       let error = null;
@@ -141,6 +149,8 @@ export default function Form({
     return newFields.every((field) => field.error === null);
   }
 
+  // This function handles the press event of the submit button.
+  // It clears the errors, validates the form, and calls the onSubmit function if the form is valid.
   function handleButtonPress() {
     clearErrors();
 
@@ -149,6 +159,7 @@ export default function Form({
     onSubmit && onSubmit();
   }
 
+  // This function maps the form fields to their corresponding input components.
   function mapFields() {
     return fields.map((field) => {
       const { min, max, onChange, type, ...otherProps } = field;

@@ -6,6 +6,8 @@ interface IPressableProps extends PressableProps {
   label: string;
 }
 
+// This function represents a customizable pressable button component.
+// It accepts a label and other pressable properties as props.
 export function DefaultPressable(props: IPressableProps) {
   const { label, ...otherProps } = props;
   const color = useThemeColor({ light: "#FFFFFF", dark: "#1A2C47" }, "text");

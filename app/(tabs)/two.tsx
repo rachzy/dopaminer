@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import { Text, View } from '../../components/atoms/Themed';
 
+// This function represents the screen for the second tab in the app.
 export default function TabTwoScreen() {
   return (
     <View style={styles.container}>

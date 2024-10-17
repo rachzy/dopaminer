@@ -8,6 +8,8 @@ interface IProps extends PickerProps {
   field: IFormField;
 }
 
+// This function represents a select group component that includes a label and a picker.
+// It accepts a field and other picker properties as props.
 export default function SelectGroup(props: IProps) {
   const { field, ...otherProps } = props;
   const { label } = field;

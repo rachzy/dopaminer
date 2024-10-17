@@ -6,6 +6,7 @@ import Title from "../../components/atoms/Title";
 import { DefaultPressable } from "../../components/atoms/DefaultPressable";
 import { router } from "expo-router";
 
+// This function represents a modal that informs the user that the app does not have permission to access their media files.
 export default function ModalNoMediaAccess() {
   return (
     <View style={styles.wrapper}>

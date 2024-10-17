@@ -9,6 +9,8 @@ interface IProps extends TextInputProps {
   error?: string | null;
 }
 
+// This function represents an input group component that includes a label, a text input, and an error message.
+// It accepts label, password, error, and other text input properties as props.
 export default function InputGroup(props: IProps) {
   const { label, error, password, ...otherProps } = props;
   return (

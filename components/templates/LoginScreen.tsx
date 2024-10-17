@@ -9,6 +9,7 @@ import { IFormField } from "../../interfaces/FormField";
 import Form from "../organisms/Form";
 import { useState } from "react";
 
+// This function represents the login screen of the app.
 export default function LoginScreen() {
   const [formFields, setFormFields] = useState<IFormField[]>([
     {
