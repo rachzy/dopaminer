@@ -10,6 +10,7 @@ import { router } from "expo-router";
 import { isValid, parse } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
+// This function represents the registration screen of the app.
 export default function RegisterScreen() {
   const setFormValues = useRegisterFormStore((state) => state.setValues);
   const [formFields, setFormFields] = useState<IFormField[]>([

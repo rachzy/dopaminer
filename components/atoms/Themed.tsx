@@ -48,6 +48,8 @@ interface ITextProps extends TextProps {
   fontFamily?: textFonts;
 }
 
+// This function represents a custom Text component that uses the Poppins font family.
+// It accepts fontFamily, lightColor, darkColor, and other text properties as props.
 export function Text(props: ITextProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
 
@@ -78,6 +80,8 @@ export function Text(props: ITextProps) {
   return <DefaultText style={[{ color, fontFamily }, style]} {...otherProps} />;
 }
 
+// This function represents a custom View component that uses the theme colors.
+// It accepts lightColor, darkColor, and other view properties as props.
 export function View(props: ViewProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
   const backgroundColor = useThemeColor(
@@ -88,6 +92,8 @@ export function View(props: ViewProps) {
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
 }
 
+// This function represents a custom Input component that uses the theme colors.
+// It accepts TextInputProps to customize the input field.
 export function Input(props: TextInputProps) {
   const { style, ...otherProps } = props;
   const backgroundColor = useThemeColor(

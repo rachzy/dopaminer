@@ -12,6 +12,7 @@ import * as ImagePicker from "expo-image-picker";
 import { DefaultPressable } from "../atoms/DefaultPressable";
 import { useRegisterFormStore } from "../../store/forms/register";
 
+// This function represents the upload profile picture screen of the app.
 export default function UploadPfpScreen() {
   const setRegisterFormValues = useRegisterFormStore(
     (state) => state.setValues
@@ -20,6 +21,8 @@ export default function UploadPfpScreen() {
   const [permissionsResponse, requestPermission] =
     MediaLibrary.usePermissions();
 
+  // This function handles the press event of the change profile picture button.
+  // It requests permission to access the media library and allows the user to select an image.
   async function handleChangePfpButtonPress() {
     if (!permissionsResponse?.granted) {
       requestPermission();
@@ -41,6 +44,8 @@ export default function UploadPfpScreen() {
     setSelectedImage(result.assets[0].uri);
   }
 
+  // This function handles the press event of the next button.
+  // It sets the selected image as the profile picture and navigates to the first task creation screen.
   function handleNextButtonPress() {
     if (selectedImage) {
       setRegisterFormValues({ profilePicture: selectedImage });

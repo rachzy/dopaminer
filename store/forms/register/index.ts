@@ -13,6 +13,8 @@ type Action = {
   setValues: (values: Partial<State["values"]>) => void;
 };
 
+// This function creates a store for managing the registration form state.
+// It uses the Zustand library to create a store with initial values and a setValues action to update the form state.
 export const useRegisterFormStore = create<State & Action>((set) => ({
   values: {
     name: "",

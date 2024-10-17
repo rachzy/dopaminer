@@ -3,6 +3,7 @@ import { View } from "../components/atoms/Themed";
 import * as Progress from "react-native-progress";
 import Colors from "../constants/Colors";
 
+// This function represents the loading screen of the app.
 export default function Loading() {
   const colorScheme = Appearance.getColorScheme() as "light" | "dark" | null;
   return (

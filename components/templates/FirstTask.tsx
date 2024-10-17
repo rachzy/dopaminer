@@ -6,6 +6,7 @@ import { IFormField } from "../../interfaces/FormField";
 import Form from "../organisms/Form";
 import { StyleSheet } from "react-native";
 
+// This function represents the first task creation screen of the app.
 export default function FirstTaskScreen() {
   const [formFields, setFormFields] = useState<IFormField[]>([
     {

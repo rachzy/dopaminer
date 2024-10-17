@@ -14,6 +14,7 @@ function TabBarIcon(props: {
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
+// This function represents the layout for the tab navigation in the app.
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 

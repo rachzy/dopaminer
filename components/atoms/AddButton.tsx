@@ -6,6 +6,8 @@ interface IProps extends TouchableHighlightProps {
   height: number;
 }
 
+// This function represents a button component that displays an "Add" icon.
+// It accepts width and height as props to set the size of the button.
 export default function AddButton(props: IProps) {
   const { width, height, style, ...otherProps } = props;
   return (

@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { Text, View } from '../components/atoms/Themed';
 
+// This function represents the screen that is displayed when a user navigates to a route that does not exist.
 export default function NotFoundScreen() {
   return (
     <>

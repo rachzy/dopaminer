@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Text, View } from '../../components/atoms/Themed';
 
+// This function represents the screen for the first tab in the app.
 export default function TabOneScreen() {
   return (
     <View style={styles.container}>
